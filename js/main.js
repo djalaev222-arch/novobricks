@@ -325,37 +325,41 @@ function initSlider(trackId, prevId, nextId, perPage) {
   setPos(false);
 }
 
-initSlider('productsTrack', 'productsPrev', 'productsNext', 1);
-initSlider('paletteTrack',  'palettePrev',  'paletteNext',  2);
-initSlider('galleryTrack',  'galleryPrev',  'galleryNext',  1);
+/* Run sliders + review fix after full layout is ready */
+window.addEventListener('load', function () {
+  initSlider('productsTrack', 'productsPrev', 'productsNext', 1);
+  initSlider('paletteTrack',  'palettePrev',  'paletteNext',  2);
+  initSlider('galleryTrack',  'galleryPrev',  'galleryNext',  1);
+  fixReviewsOnMobile();
+});
 
-/* ─── FIX REVIEW CARD WIDTHS ON MOBILE ─── */
-(function fixReviews() {
+function fixReviewsOnMobile() {
   if (window.innerWidth > 767) return;
   const vp = document.querySelector('.reviews__viewport');
   if (!vp) return;
   const w = vp.offsetWidth;
   if (!w) return;
+
   $$('.review-card').forEach(c => {
-    c.style.minWidth = w + 'px';
-    c.style.width    = w + 'px';
+    c.style.minWidth  = w + 'px';
+    c.style.width     = w + 'px';
     c.style.boxSizing = 'border-box';
   });
-  // Re-bind goToReview to use pixel translation
+
   const track = $('reviewsTrack');
   if (!track) return;
-  const origGo = window._goToReview;
-  const total  = track.children.length;
+  const total = track.children.length;
   let idx = 0;
+
   function goTo(i) {
     idx = ((i % total) + total) % total;
     track.style.transform = `translateX(-${idx * w}px)`;
-    const dots = document.querySelectorAll('.reviews__dot');
-    dots.forEach((d, j) => d.classList.toggle('active', j === idx));
+    $$('.reviews__dot').forEach((d, j) => d.classList.toggle('active', j === idx));
   }
-  $('reviewPrev') && ($('reviewPrev').onclick = () => goTo(idx - 1));
-  $('reviewNext') && ($('reviewNext').onclick = () => goTo(idx + 1));
-  document.querySelectorAll('.reviews__dot').forEach((d, i) => {
-    d.onclick = () => goTo(i);
-  });
-})();
+
+  const prev = $('reviewPrev');
+  const next = $('reviewNext');
+  if (prev) { prev.replaceWith(prev.cloneNode(true)); $('reviewPrev').addEventListener('click', () => goTo(idx - 1)); }
+  if (next) { next.replaceWith(next.cloneNode(true)); $('reviewNext').addEventListener('click', () => goTo(idx + 1)); }
+  $$('.reviews__dot').forEach((d, i) => { d.addEventListener('click', () => goTo(i)); });
+}
