@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovoBricks — Гиперпрессованный кирпич и плитка из Башкирии</title>
+  <meta name="description" content="Производство гиперпрессованного кирпича и плитки в Башкирии. Срок службы в 12 раз выше силикатного. Доставка по РФ от 3 дней." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     MODAL: Заказать звонок
+═══════════════════════════════════════ -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Заказать звонок">
+  <div class="modal__overlay" id="modalOverlay"></div>
+  <div class="modal__box">
+    <button class="modal__close" id="modalClose" aria-label="Закрыть">✕</button>
+    <h2 class="modal__title">Заказать звонок</h2>
+    <p class="modal__sub">Перезвоним в течение 30 минут</p>
+    <form class="modal__form" id="modalForm">
+      <div class="form-group">
+        <input type="text" class="form-input" name="name" placeholder="Ваше имя" required />
+      </div>
+      <div class="form-group">
+        <input type="tel" class="form-input js-phone-mask" name="phone" placeholder="+7 (___) ___-__-__" required />
+      </div>
+      <div class="form-group">
+        <textarea class="form-input form-textarea" name="comment" rows="3" placeholder="Комментарий (необязательно)"></textarea>
+      </div>
+      <button type="submit" class="btn btn--primary btn--full">Перезвоните мне</button>
+    </form>
+    <div class="modal__success hidden" id="modalSuccess">
+      <div class="modal__success-icon">✅</div>
+      <p>Заявка принята! Перезвоним в течение часа.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     LIGHTBOX
+═══════════════════════════════════════ -->
+<div class="lightbox hidden" id="lightbox">
+  <div class="lightbox__overlay" id="lightboxOverlay"></div>
+  <div class="lightbox__inner">
+    <button class="lightbox__close" id="lightboxClose">✕</button>
+    <button class="lightbox__arrow lightbox__arrow--prev" id="lightboxPrev">&#8249;</button>
+    <div class="lightbox__stage">
+      <div class="lightbox__img" id="lightboxImg"></div>
+      <p class="lightbox__caption" id="lightboxCaption"></p>
+    </div>
+    <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext">&#8250;</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 1. ШАПКА
+═══════════════════════════════════════ -->
+<header class="header" id="header">
+  <div class="container header__inner">
+    <a href="index.html" class="logo">NOVO <span class="logo__accent">BRICKS</span></a>
+    <nav class="nav" id="nav">
+      <a href="#products"   class="nav__link">Продукция</a>
+      <a href="#production" class="nav__link">Производство</a>
+      <a href="#objects"    class="nav__link">Объекты</a>
+      <a href="#reviews"    class="nav__link">Отзывы</a>
+      <a href="#contacts"   class="nav__link">Контакты</a>
+    </nav>
+    <div class="header__right">
+      <a href="tel:+79649595095" class="header__tel">+7 (964) 95-95-095</a>
+      <button class="btn btn--primary btn--sm js-open-modal">Заказать звонок</button>
+    </div>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 2. ПЕРВЫЙ ЭКРАН
+═══════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero__photo"></div>
+  <div class="hero__bg"></div>
+  <div class="container">
+    <div class="hero__content">
+      <p class="hero__label">Производитель · Башкортостан</p>
+      <h1 class="hero__title">Гиперпрессованный кирпич и плитка от производителя в Башкирии</h1>
+      <p class="hero__desc">Срок службы в 12 раз выше силикатного.<br>Доставка по РФ от 3 дней.</p>
+      <div class="hero__actions">
+        <button class="btn btn--primary btn--lg js-open-modal">Получить прайс</button>
+        <a href="#lead" class="btn btn--ghost btn--lg">Рассчитать стоимость</a>
+      </div>
+      <div class="hero__facts">
+        <div class="hero__fact">
+          <span class="hero__fact-icon"><svg class="icon-anim icon-strength" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 19 21 5 21 2 8.5"/><line x1="2" y1="8.5" x2="22" y2="8.5"/><line x1="12" y1="2" x2="5" y2="21"/><line x1="12" y1="2" x2="19" y2="21"/></svg></span>
+          <span>Прочность М300</span>
+        </div>
+        <div class="hero__fact">
+          <span class="hero__fact-icon"><svg class="icon-anim icon-snow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5.64" y1="5.64" x2="18.36" y2="18.36"/><line x1="18.36" y1="5.64" x2="5.64" y2="18.36"/><polyline points="12 5 9 8"/><polyline points="12 5 15 8"/><polyline points="12 19 9 16"/><polyline points="12 19 15 16"/></svg></span>
+          <span>Морозостойкость 300 циклов</span>
+        </div>
+        <div class="hero__fact">
+          <span class="hero__fact-icon"><svg class="icon-anim icon-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
+          <span>Водопоглощение 3–5%</span>
+        </div>
+        <div class="hero__fact">
+          <span class="hero__fact-icon"><svg class="icon-anim icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span>
+          <span>Негорючий материал</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 3. ЦИФРЫ КОМПАНИИ
+═══════════════════════════════════════ -->
+<section class="stats-dark">
+  <div class="container stats-dark__grid">
+    <div class="stat-item">
+      <strong>13,6 млн</strong>
+      <span>кирпичей в год</span>
+    </div>
+    <div class="stat-item">
+      <strong>300</strong>
+      <span>циклов морозостойкости</span>
+    </div>
+    <div class="stat-item">
+      <strong>14</strong>
+      <span>цветов в палитре</span>
+    </div>
+    <div class="stat-item">
+      <strong>22</strong>
+      <span>типоразмера в каталоге</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 4. НАША ПРОДУКЦИЯ
+═══════════════════════════════════════ -->
+<section class="products section" id="products">
+  <div class="container">
+    <div class="section__head">
+      <p class="section__label">Наша продукция</p>
+      <h2 class="section__title">Что мы производим</h2>
+    </div>
+    <div class="products__grid products__grid--3">
+
+      <div class="product-card">
+        <div class="product-card__image product-card__image--brick"></div>
+        <div class="product-card__body">
+          <h3 class="product-card__title">Облицовочный кирпич</h3>
+          <p class="product-card__desc">Фасад «как камень». 14 цветов, 22 размера. Гиперпрессование без обжига.</p>
+          <p class="product-card__price">от <strong>40 ₽</strong> за штуку</p>
+          <a href="brick-quiz.html" class="btn btn--primary btn--sm">Подобрать кирпич →</a>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-card__image product-card__image--tile"></div>
+        <div class="product-card__body">
+          <h3 class="product-card__title">Облицовочная плитка</h3>
+          <p class="product-card__desc">Вид кирпича без веса. Лёгкий монтаж на любые поверхности.</p>
+          <p class="product-card__price">от <strong>1 100 ₽</strong> за м²</p>
+          <a href="tile-quiz.html" class="btn btn--primary btn--sm">Подобрать плитку →</a>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-card__image product-card__image--paving"></div>
+        <div class="product-card__body">
+          <h3 class="product-card__title">Тротуарная плитка</h3>
+          <p class="product-card__desc">Вечное покрытие для дворов и дорожек. Выдерживает нагрузку грузовика.</p>
+          <p class="product-card__price">от <strong>1 100 ₽</strong> за м²</p>
+          <a href="tile-quiz.html" class="btn btn--primary btn--sm">Подобрать плитку →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 5. ПАЛИТРА
+═══════════════════════════════════════ -->
+<section class="palette section">
+  <div class="container">
+    <div class="section__head">
+      <p class="section__label">Цвета</p>
+      <h2 class="section__title"><span class="palette__num">14</span> цветов на любой вкус</h2>
+    </div>
+    <div class="palette__grid">
+      <div class="swatch"><div class="swatch__color" style="background:#F5EFE6"></div><span>Белый</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#EDE0CC"></div><span>Слоновая кость</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#D4B896"></div><span>Бежевый</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#C8A06A"></div><span>Песочный</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#D4A017"></div><span>Жёлтый</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#F58220"></div><span>Оранжевый</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#C4613A"></div><span>Терракот</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#B5341F"></div><span>Красный</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#7A3B1E"></div><span>Коричневый</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#4A2010"></div><span>Тёмно-коричневый</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#6B7A4A"></div><span>Хаки</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#4A7A3A"></div><span>Зелёный</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#9B9B9B"></div><span>Серый</span></div>
+      <div class="swatch"><div class="swatch__color" style="background:#2A2A2A"></div><span>Чёрный</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 6. СРАВНЕНИЕ С СИЛИКАТНЫМ
+═══════════════════════════════════════ -->
+<section class="comparison">
+  <div class="container">
+    <div class="section__head">
+      <p class="section__label section__label--light">Преимущества</p>
+      <h2 class="section__title section__title--light">Почему наш кирпич лучше силикатного</h2>
+    </div>
+    <div class="comparison__grid">
+      <div class="comparison__card">
+        <span class="comparison__mult">×12</span>
+        <span class="comparison__label">срок службы</span>
+      </div>
+      <div class="comparison__card">
+        <span class="comparison__mult">×4</span>
+        <span class="comparison__label">морозостойкость</span>
+      </div>
+      <div class="comparison__card">
+        <span class="comparison__mult">×3</span>
+        <span class="comparison__label">прочность</span>
+      </div>
+      <div class="comparison__card">
+        <span class="comparison__mult">÷2</span>
+        <span class="comparison__label">водопоглощение</span>
+      </div>
+    </div>
+    <p class="comparison__note">По сравнению с силикатным кирпичом</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 7. ПРОИЗВОДСТВО
+═══════════════════════════════════════ -->
+<section class="production section" id="production">
+  <div class="container production__inner">
+    <div class="production__image"></div>
+    <div class="production__content">
+      <p class="section__label">Технология</p>
+      <h2 class="section__title">Технология TRIBOPRESS</h2>
+      <p class="production__text">Производим по испанской технологии гиперпрессования. Завод выпускает 1 800 кирпичей в час. Без обжига, без химии — только давление и натуральное сырьё.</p>
+      <div class="production__more hidden" id="productionMore">
+        <p class="production__text">Гиперпрессование — метод, при котором смесь цемента, отсева и пигмента спрессовывается под давлением до 30 МПа. Результат: плотная, однородная структура без пор и трещин. Такой кирпич не впитывает влагу, не выцветает и сохраняет геометрию на протяжении всего срока эксплуатации.</p>
+        <p class="production__text">Наш завод в Белорецке работает в две смены. Сырьё — местный известняк и гранитный отсев. Пигменты — немецкие, UV-стойкие, не выгорают на солнце.</p>
+      </div>
+      <button class="btn btn--outline" id="productionToggle">Подробнее о производстве</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 8. НАШИ ОБЪЕКТЫ
+═══════════════════════════════════════ -->
+<section class="gallery section" id="objects">
+  <div class="container">
+    <div class="section__head">
+      <p class="section__label">Портфолио</p>
+      <h2 class="section__title">Наши объекты</h2>
+    </div>
+    <div class="gallery__grid">
+      <div class="gallery__item" data-index="0" data-caption="Жилой дом, Уфа — Кирпич «Красный»"            style="background-image:url('images/Портфолио/кирпич1.jpg')"></div>
+      <div class="gallery__item" data-index="1" data-caption="Коттедж, Белорецк — Кирпич «Коричневый»"      style="background-image:url('images/Портфолио/кирпич2.jpg')"></div>
+      <div class="gallery__item" data-index="2" data-caption="ТЦ, Стерлитамак — Кирпич «Серый»"            style="background-image:url('images/Портфолио/кирпич3.jpg')"></div>
+      <div class="gallery__item" data-index="3" data-caption="Частный дом, Нефтекамск — Облицовочная плитка" style="background-image:url('images/Портфолио/оплитка1.jpg')"></div>
+      <div class="gallery__item" data-index="4" data-caption="Забор и ворота, Уфа — Облицовочная плитка"   style="background-image:url('images/Портфолио/оплитка2.jpg')"></div>
+      <div class="gallery__item" data-index="5" data-caption="Баня и беседка, Белебей — Облицовочная плитка" style="background-image:url('images/Портфолио/оплитка3.jpg')"></div>
+      <div class="gallery__item" data-index="6" data-caption="Детский сад, Салават — Тротуарная плитка"    style="background-image:url('images/Портфолио/плитка1.jpg')"></div>
+      <div class="gallery__item" data-index="7" data-caption="Дорожки и патио, Уфа — Тротуарная плитка"   style="background-image:url('images/Портфолио/плитка2.jpg')"></div>
+      <div class="gallery__item" data-index="8" data-caption="Бизнес-центр, Уфа — Тротуарная плитка"      style="background-image:url('images/Портфолио/плитка3.jpg')"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 9. ОТЗЫВЫ
+═══════════════════════════════════════ -->
+<section class="reviews section" id="reviews">
+  <div class="container">
+    <div class="section__head">
+      <p class="section__label">Отзывы</p>
+      <h2 class="section__title">Что говорят клиенты</h2>
+    </div>
+    <div class="reviews__wrap">
+      <button class="reviews__arrow reviews__arrow--prev" id="reviewPrev" aria-label="Предыдущий">&#8249;</button>
+      <div class="reviews__viewport">
+        <div class="reviews__track" id="reviewsTrack">
+
+          <div class="review-card">
+            <div class="review-card__top">
+              <div class="review-card__avatar" style="background:#E8630A">
+                <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><circle cx="22" cy="15" r="8" fill="rgba(255,255,255,0.92)"/><path d="M0 44 C0 27 44 27 44 44 Z" fill="rgba(255,255,255,0.92)"/></svg>
+              </div>
+              <div>
+                <strong class="review-card__name">Сергей К.</strong>
+                <span class="review-card__product">Облицовочный кирпич «Красный»</span>
+              </div>
+              <span class="review-card__date">март 2026</span>
+            </div>
+            <p class="review-card__text">Заказывал кирпич для фасада дома. Приятно удивила чёткая геометрия — ни одного брака в поддоне. Цвет насыщенный, не выгорает. Доставили точно в срок, выгрузили к месту кладки. Рекомендую.</p>
+          </div>
+
+          <div class="review-card">
+            <div class="review-card__top">
+              <div class="review-card__avatar" style="background:#7C3AED">
+                <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><circle cx="22" cy="15" r="8" fill="rgba(255,255,255,0.92)"/><path d="M0 44 C0 27 44 27 44 44 Z" fill="rgba(255,255,255,0.92)"/></svg>
+              </div>
+              <div>
+                <strong class="review-card__name">Анна М.</strong>
+                <span class="review-card__product">Облицовочная плитка</span>
+              </div>
+              <span class="review-card__date">февраль 2026</span>
+            </div>
+            <p class="review-card__text">Делала ремонт на кухне, хотела вид кирпичной кладки. Менеджер помог подобрать цвет по фото интерьера. Плитка лёгкая, клеится отлично. Результатом очень довольна — все гости думают, что это настоящий кирпич.</p>
+          </div>
+
+          <div class="review-card">
+            <div class="review-card__top">
+              <div class="review-card__avatar" style="background:#047857">
+                <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><circle cx="22" cy="15" r="8" fill="rgba(255,255,255,0.92)"/><path d="M0 44 C0 27 44 27 44 44 Z" fill="rgba(255,255,255,0.92)"/></svg>
+              </div>
+              <div>
+                <strong class="review-card__name">Дмитрий П.</strong>
+                <span class="review-card__product">Тротуарная плитка</span>
+              </div>
+              <span class="review-card__date">январь 2026</span>
+            </div>
+            <p class="review-card__text">Уложили тротуарную плитку вокруг загородного дома. Пережила зиму отлично — ни одной трещины после 30-градусных морозов. Качество на уровне, цена разумная. Уже рекомендовал соседям.</p>
+          </div>
+
+          <div class="review-card">
+            <div class="review-card__top">
+              <div class="review-card__avatar" style="background:#BE123C">
+                <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><circle cx="22" cy="15" r="8" fill="rgba(255,255,255,0.92)"/><path d="M0 44 C0 27 44 27 44 44 Z" fill="rgba(255,255,255,0.92)"/></svg>
+              </div>
+              <div>
+                <strong class="review-card__name">Ирина С.</strong>
+                <span class="review-card__product">Кирпич «Серый» для забора</span>
+              </div>
+              <span class="review-card__date">декабрь 2025</span>
+            </div>
+            <p class="review-card__text">Строили забор вокруг участка. Взяли серый кирпич — смотрится очень современно. Геометрия идеальная, шов получается ровным. Мастер сказал, что с таким кирпичом работать одно удовольствие.</p>
+          </div>
+
+          <div class="review-card">
+            <div class="review-card__top">
+              <div class="review-card__avatar" style="background:#1D4ED8">
+                <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><circle cx="22" cy="15" r="8" fill="rgba(255,255,255,0.92)"/><path d="M0 44 C0 27 44 27 44 44 Z" fill="rgba(255,255,255,0.92)"/></svg>
+              </div>
+              <div>
+                <strong class="review-card__name">Вадим Н.</strong>
+                <span class="review-card__product">Кирпич «Бежевый» для коттеджа</span>
+              </div>
+              <span class="review-card__date">ноябрь 2025</span>
+            </div>
+            <p class="review-card__text">Строю коттедж два года, выбирал кирпич долго. Остановился на NovoBricks после того, как взял образцы. Разница с обычным силикатным ощутима сразу. Заказал 40 000 штук, доставили в три рейса, всё чётко.</p>
+          </div>
+
+        </div>
+      </div>
+      <button class="reviews__arrow reviews__arrow--next" id="reviewNext" aria-label="Следующий">&#8250;</button>
+    </div>
+    <div class="reviews__dots" id="reviewDots"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 10. ГАРАНТИИ
+═══════════════════════════════════════ -->
+<section class="guarantees">
+  <div class="container guarantees__grid">
+    <div class="guarantee-item">
+      <span class="guarantee-item__icon"><svg class="icon-anim icon-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></span>
+      <h3>Гарантия качества</h3>
+      <p>Сертификаты, ТУ, ГОСТ. Каждая партия — с паспортом испытаний.</p>
+    </div>
+    <div class="guarantee-item">
+      <span class="guarantee-item__icon"><svg class="icon-anim icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
+      <h3>Замена брака</h3>
+      <p>Заменим за свой счёт. Без лишних вопросов и бюрократии.</p>
+    </div>
+    <div class="guarantee-item">
+      <span class="guarantee-item__icon"><svg class="icon-anim icon-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>
+      <h3>Доставка по РФ</h3>
+      <p>От 3 дней по Башкирии. До любого региона — транспортными компаниями.</p>
+    </div>
+    <div class="guarantee-item">
+      <span class="guarantee-item__icon"><svg class="icon-anim icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+      <h3>Документы</h3>
+      <p>Полный пакет: счёт, накладная, сертификат соответствия на заказ.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 11. FAQ
+═══════════════════════════════════════ -->
+<section class="faq section">
+  <div class="container">
+    <div class="section__head">
+      <p class="section__label">Вопросы и ответы</p>
+      <h2 class="section__title">Часто спрашивают</h2>
+    </div>
+    <div class="faq__list">
+
+      <div class="faq-item">
+        <button class="faq-question">Какой минимальный объём заказа?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Минимальный заказ — от 100 штук кирпича или от 5 м² плитки. Для тротуарной плитки — от 10 м². При объёме от 500 штук действуют оптовые условия.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Как организована доставка?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>По Башкирии доставляем собственным транспортом от 3 дней. В другие регионы России — транспортными компаниями (СДЭК, Деловые Линии, ПЭК). Стоимость доставки рассчитывается индивидуально при оформлении заказа.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Можно ли получить образец?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Да, высылаем бесплатные образцы по Башкирии. Для других регионов — образцы отправляем за счёт покупателя. Оставьте заявку, и менеджер уточнит детали.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Какие способы оплаты?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Принимаем наличные, безналичный расчёт (для юридических лиц — счёт с НДС), а также оплату картой. Для крупных заказов возможна рассрочка — уточняйте у менеджера.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Сколько делается заказ?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Стандартный заказ — 5–7 рабочих дней. Срочное производство — от 3 дней (обсуждается отдельно). Если продукция есть на складе — отгрузка в день оплаты.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Что если приедет брак?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Заменяем брак за свой счёт без лишних вопросов. Каждая партия сопровождается паспортом качества. При обнаружении дефектов — сфотографируйте и свяжитесь с менеджером, решим в течение 24 часов.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Есть ли скидки для подрядчиков?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Да, для строительных компаний и подрядчиков действуют специальные условия при заказе от 500 штук кирпича или от 50 м² плитки. Также предусмотрена накопительная скидка для постоянных клиентов.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Какие документы получит покупатель?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Полный пакет: счёт-фактура, товарная накладная (ТОРГ-12), сертификат соответствия и паспорт качества на партию. Для юридических лиц оформляем УПД с НДС.</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 12. ФОРМА ЗАЯВКИ
+═══════════════════════════════════════ -->
+<section class="lead-section" id="lead">
+  <div class="container lead-section__inner">
+    <div class="lead-section__head">
+      <p class="section__label section__label--light">Бесплатно</p>
+      <h2 class="section__title section__title--light">Оставьте заявку, рассчитаем стоимость и доставку</h2>
+    </div>
+    <div class="lead-section__form-wrap">
+      <form class="lead-form" id="leadForm">
+        <div class="form-group">
+          <input type="text" class="form-input" name="name" placeholder="Имя" required />
+        </div>
+        <div class="form-group">
+          <input type="tel" class="form-input js-phone-mask" name="phone" placeholder="+7 (___) ___-__-__" required />
+        </div>
+        <div class="form-group">
+          <select class="form-input form-select" name="interest">
+            <option value="" disabled selected>Что интересует</option>
+            <option value="brick">Кирпич облицовочный</option>
+            <option value="tile">Облицовочная плитка</option>
+            <option value="paving">Тротуарная плитка</option>
+            <option value="unknown">Не знаю, помогите выбрать</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea class="form-input form-textarea" name="comment" rows="3" placeholder="Комментарий (необязательно)"></textarea>
+        </div>
+        <div class="form-group form-group--check">
+          <label class="form-check">
+            <input type="checkbox" name="agree" required />
+            <span>Согласен с <a href="#">политикой конфиденциальности</a></span>
+          </label>
+        </div>
+        <button type="submit" class="btn btn--primary btn--full btn--lg">Получить расчёт</button>
+      </form>
+      <div class="lead-success hidden" id="leadSuccess">
+        <div class="lead-success__icon">✅</div>
+        <h3>Заявка принята!</h3>
+        <p>Перезвоним в течение часа и рассчитаем стоимость под ваш объект.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 13. КОНТАКТЫ
+═══════════════════════════════════════ -->
+<section class="contacts-map section" id="contacts">
+  <div class="container">
+    <div class="section__head">
+      <p class="section__label">Контакты</p>
+      <h2 class="section__title">Где нас найти</h2>
+    </div>
+    <div class="contacts-map__inner">
+      <div class="contacts-map__info">
+        <div class="contacts-office">
+          <h3 class="contacts-office__title">Главный офис — Уфа</h3>
+          <p>ул. Строительная, 1, офис 201</p>
+          <a href="tel:+79649595095">+7 (964) 95-95-095</a>
+          <span>Пн–Пт: 8:00–18:00, Сб: 9:00–14:00</span>
+        </div>
+        <div class="contacts-office">
+          <h3 class="contacts-office__title">Завод — Белорецк</h3>
+          <p>ул. Заводская, 14</p>
+          <a href="tel:+79649595095">+7 (964) 95-95-095</a>
+          <span>Пн–Пт: 7:00–17:00</span>
+        </div>
+        <a href="mailto:info@novobricks.ru" class="contacts-email">info@novobricks.ru</a>
+      </div>
+      <div class="contacts-map__map">
+        <iframe
+          src="https://yandex.ru/map-widget/v1/?ll=55.9721%2C54.7388&z=13&l=map&pt=55.9721,54.7388,pm2rdm"
+          width="100%"
+          height="400"
+          frameborder="0"
+          allowfullscreen
+          title="Карта NovoBricks"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════
+     БЛОК 14. ПОДВАЛ
+═══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="index.html" class="logo logo--footer">NOVO <span class="logo__accent">BRICKS</span></a>
+      <p>Производитель гиперпрессованного кирпича и плитки в Башкортостане с 2003 года.</p>
+      <div class="footer__socials">
+        <a href="#" class="social-link" aria-label="Telegram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.607l-2.95-.924c-.64-.203-.654-.64.136-.954l11.57-4.461c.537-.194 1.006.131.968.953z"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="WhatsApp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564c.173.087.289.13.332.202.043.072.043.419-.101.824z"/><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="ВКонтакте">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.864 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.253-1.405 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.745-.576.745z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer__links">
+      <h4>Каталог</h4>
+      <a href="brick-quiz.html">Облицовочный кирпич</a>
+      <a href="tile-quiz.html">Облицовочная плитка</a>
+      <a href="tile-quiz.html">Тротуарная плитка</a>
+      <a href="#palette">Палитра цветов</a>
+    </div>
+    <div class="footer__links">
+      <h4>Компания</h4>
+      <a href="#production">Производство</a>
+      <a href="#objects">Наши объекты</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer__links">
+      <h4>Контакты</h4>
+      <a href="tel:+79649595095">+7 (964) 95-95-095</a>
+      <a href="mailto:info@novobricks.ru">info@novobricks.ru</a>
+      <span>Уфа, ул. Строительная, 1</span>
+      <span>Белорецк, ул. Заводская, 14</span>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <p>© 2026 NOVOBRICKS. Все права защищены.</p>
+      <a href="#">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

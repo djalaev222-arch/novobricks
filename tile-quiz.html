@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Расчёт стоимости плитки — NovoBricks</title>
+  <meta name="description" content="Подберите тротуарную или облицовочную плитку за 6 вопросов. Получите расчёт стоимости и сроков доставки от производителя NovoBricks в Башкирии." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange:    #F58220;
+      --orange-dk: #D96E10;
+      --dark:      #1A1A1A;
+      --gray-mid:  #6B6B6B;
+      --gray-light:#F5F3EF;
+      --border:    #E4DDD4;
+      --white:     #FFFFFF;
+      --font-h:    'Bebas Neue', Impact, sans-serif;
+      --font-b:    'Manrope', system-ui, sans-serif;
+      --ease:      cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html, body { height: 100%; overflow-x: hidden; }
+    body { font-family: var(--font-b); background: #FAF8F5; color: var(--dark); }
+
+    /* ─── HEADER ─────────────────────────── */
+    .qh {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 60px; background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 140px 1fr 140px;
+      align-items: center;
+      padding: 0 clamp(1rem, 4vw, 2.5rem);
+      gap: 1.5rem;
+    }
+    .qh__logo {
+      font-family: var(--font-h); font-size: 1.3rem;
+      letter-spacing: 0.05em; color: var(--dark); text-decoration: none;
+    }
+    .qh__logo em { font-style: normal; color: var(--orange); }
+    .qh__progress { height: 5px; background: #EDE8E0; border-radius: 99px; overflow: hidden; }
+    .qh__bar {
+      height: 100%; background: var(--orange);
+      border-radius: 99px;
+      transition: width 0.45s var(--ease); width: 0%;
+    }
+    .qh__label {
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--gray-mid); text-align: right; white-space: nowrap;
+    }
+
+    /* ─── MAIN ───────────────────────────── */
+    .qmain {
+      min-height: 100vh;
+      padding: 76px 0 84px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ─── SCREENS ────────────────────────── */
+    .qs {
+      display: none; width: 100%;
+      max-width: 680px; margin: 0 auto;
+      padding: 2rem clamp(1rem, 4vw, 2rem);
+    }
+    .qs.active { display: block; }
+
+    @keyframes inR  { from { opacity:0; transform:translateX(52px); } to { opacity:1; transform:none; } }
+    @keyframes inL  { from { opacity:0; transform:translateX(-52px); } to { opacity:1; transform:none; } }
+    @keyframes outL { from { opacity:1; transform:none; } to { opacity:0; transform:translateX(-52px); } }
+    @keyframes outR { from { opacity:1; transform:none; } to { opacity:0; transform:translateX(52px); } }
+
+    .qs.anim-in-r  { animation: inR  0.34s var(--ease) both; }
+    .qs.anim-in-l  { animation: inL  0.34s var(--ease) both; }
+    .qs.anim-out-l { animation: outL 0.22s ease-in both; }
+    .qs.anim-out-r { animation: outR 0.22s ease-in both; }
+
+    /* ─── WELCOME ────────────────────────── */
+    .qw { text-align: center; max-width: 520px; margin: 0 auto; }
+    .qw__tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(245,130,32,0.10); color: var(--orange);
+      font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 0.35rem 0.9rem; border-radius: 99px; margin-bottom: 1.5rem;
+    }
+    .qw__h1 { font-family: var(--font-h); font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; margin-bottom: 1rem; }
+    .qw__h1 em { font-style: normal; color: var(--orange); }
+    .qw__sub { color: var(--gray-mid); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2.25rem; }
+    .qw__facts { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem; }
+    .qw__fact { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--gray-mid); }
+    .qw__fact svg { color: var(--orange); flex-shrink: 0; }
+
+    /* ─── QUESTION TITLE ─────────────────── */
+    .qq__hint {
+      font-size: 0.78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--orange); margin-bottom: 0.5rem;
+    }
+    .qq__title { font-family: var(--font-h); font-size: clamp(1.6rem, 3.5vw, 2.3rem); line-height: 1.1; margin-bottom: 1.5rem; }
+    .qq__sub { font-size: 0.875rem; color: var(--gray-mid); margin-top: -0.75rem; margin-bottom: 1.25rem; }
+
+    /* ─── OPTION CARDS ───────────────────── */
+    .qopts { display: grid; gap: 0.65rem; }
+    .qopts--2 { grid-template-columns: 1fr 1fr; }
+
+    .qopt {
+      background: var(--white); border: 2px solid var(--border); border-radius: 12px;
+      padding: 0.875rem 1.1rem; cursor: pointer;
+      display: flex; align-items: center; gap: 0.875rem;
+      font-family: var(--font-b); font-size: 0.92rem; font-weight: 500;
+      color: var(--dark); text-align: left;
+      transition: border-color .15s, background .15s, transform .15s, box-shadow .15s;
+      user-select: none; -webkit-user-select: none;
+    }
+    .qopt:hover { border-color: var(--orange); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(245,130,32,0.12); }
+    .qopt.sel { border-color: var(--orange); background: rgba(245,130,32,0.06); }
+
+    .qopt__ico {
+      width: 38px; height: 38px; background: var(--gray-light);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--gray-mid);
+      transition: background .15s, color .15s;
+    }
+    .qopt.sel .qopt__ico { background: var(--orange); color: var(--white); }
+    .qopt__dot {
+      width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 50%;
+      margin-left: auto; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .15s, background .15s;
+    }
+    .qopt.sel .qopt__dot { background: var(--orange); border-color: var(--orange); }
+    .qopt.sel .qopt__dot::after { content: ''; width: 6px; height: 6px; background: var(--white); border-radius: 50%; }
+    .qopt__label { flex: 1; }
+    .qopt__label small { display: block; color: #999; font-size: 0.78rem; margin-top: 1px; }
+
+    /* ─── SHAPE CARDS ────────────────────── */
+    .qshapes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; }
+    .qshape {
+      background: var(--white); border: 2px solid var(--border); border-radius: 12px;
+      padding: 0.875rem 0.6rem; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      transition: border-color .15s, transform .15s;
+      user-select: none; -webkit-user-select: none; text-align: center;
+    }
+    .qshape:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .qshape.sel { border-color: var(--orange); background: rgba(245,130,32,0.06); }
+    .qshape__ico {
+      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+      color: var(--gray-mid); transition: color .15s;
+    }
+    .qshape.sel .qshape__ico { color: var(--orange); }
+    .qshape__name { font-size: 0.78rem; font-weight: 600; color: var(--dark); }
+    .qshape--wide { grid-column: span 2; flex-direction: row; gap: 0.75rem; }
+    .qshape--wide .qshape__ico { flex-shrink: 0; }
+
+    /* ─── COLOR SWATCHES ─────────────────── */
+    .qcolors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; }
+    .qclr {
+      background: var(--white); border: 2px solid var(--border); border-radius: 12px;
+      padding: 0.75rem 0.6rem; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 0.45rem;
+      transition: border-color .15s, transform .15s;
+      user-select: none; -webkit-user-select: none;
+    }
+    .qclr:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .qclr.sel { border-color: var(--orange); background: rgba(245,130,32,0.05); }
+    .qclr__swatch {
+      width: 100%; aspect-ratio: 1; border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.09); position: relative;
+    }
+    .qclr.sel .qclr__swatch::after {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 7px; border: 2.5px solid var(--orange);
+      background: rgba(245,130,32,0.15);
+    }
+    .qclr__name { font-size: 0.78rem; font-weight: 600; color: var(--dark); text-align: center; }
+    .qclr--any { grid-column: span 2; flex-direction: row; justify-content: center; gap: 0.6rem; }
+    .qclr--any .qclr__swatch { width: 28px; height: 28px; aspect-ratio: unset; flex-shrink: 0; }
+    .qclr__count { font-size: 0.78rem; color: var(--orange); font-weight: 700; margin-top: 0.75rem; min-height: 1.1em; }
+
+    /* ─── CONTACT FORM ───────────────────── */
+    .qform { display: flex; flex-direction: column; gap: 1rem; }
+    .qfield__label {
+      display: block; font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.07em; color: var(--gray-mid); margin-bottom: 0.4rem;
+    }
+    .qinput {
+      width: 100%; padding: 1rem 1.25rem;
+      border: 2px solid var(--border); border-radius: 12px;
+      font-family: var(--font-b); font-size: 1rem;
+      color: var(--dark); background: var(--white); outline: none;
+      transition: border-color .15s;
+    }
+    .qinput:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(245,130,32,0.10); }
+    .qinput::placeholder { color: #BBB; }
+    .qradios { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .qradio {
+      position: relative; display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1.1rem; border: 2px solid var(--border); border-radius: 99px;
+      cursor: pointer; font-size: 0.875rem; font-weight: 500;
+      transition: border-color .15s, background .15s, color .15s;
+    }
+    .qradio input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .qradio:has(input:checked) { border-color: var(--orange); background: rgba(245,130,32,0.07); color: var(--orange); }
+
+    /* ─── THANK YOU ──────────────────────── */
+    .qthanks { text-align: center; }
+    .qthanks__circle {
+      width: 76px; height: 76px; background: rgba(245,130,32,0.10); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem; color: var(--orange);
+    }
+    .qthanks__h2 { font-family: var(--font-h); font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 0.75rem; }
+    .qthanks__sub { color: var(--gray-mid); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem; }
+    .qgallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; margin-bottom: 2rem; }
+    .qgallery__item { aspect-ratio: 4/3; border-radius: 10px; background: var(--dark) center/cover no-repeat; }
+
+    /* ─── FOOTER NAV ─────────────────────── */
+    .qfooter {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: var(--white); border-top: 1px solid var(--border);
+      padding: 0.875rem clamp(1rem, 4vw, 2.5rem);
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .qfooter.hide { display: none; }
+    .qbtn {
+      font-family: var(--font-b); font-size: 0.9rem; font-weight: 700;
+      padding: 0.75rem 1.75rem; border-radius: 8px; border: none;
+      cursor: pointer;
+      transition: background .15s, transform .12s, opacity .15s, border-color .15s;
+      outline: none;
+    }
+    .qbtn--primary { background: var(--orange); color: var(--white); }
+    .qbtn--primary:hover:not(:disabled) { background: var(--orange-dk); transform: translateY(-1px); }
+    .qbtn--primary:disabled { background: #E0D5C8; color: #B09070; cursor: not-allowed; }
+    .qbtn--ghost { background: transparent; color: var(--gray-mid); border: 2px solid var(--border); }
+    .qbtn--ghost:hover { border-color: var(--dark); color: var(--dark); }
+    .qbtn--ghost.inv { visibility: hidden; }
+    .qbtn--lg { padding: 1rem 2.5rem; font-size: 1rem; }
+
+    /* ─── RESPONSIVE ─────────────────────── */
+    @media (max-width: 580px) {
+      .qh { grid-template-columns: 1fr auto; }
+      .qh__progress { display: none; }
+      .qopts--2 { grid-template-columns: 1fr; }
+      .qshapes { grid-template-columns: repeat(2, 1fr); }
+      .qshape--wide { grid-column: span 2; }
+      .qcolors { grid-template-columns: repeat(3, 1fr); }
+      .qclr--any { grid-column: span 3; }
+      .qgallery { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ──────────── HEADER ──────────── -->
+<header class="qh" id="qHeader" role="banner">
+  <a href="index.html" class="qh__logo">NOVO<em>BRICKS</em></a>
+  <div class="qh__progress" id="qProgress" style="visibility:hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+    <div class="qh__bar" id="qBar"></div>
+  </div>
+  <span class="qh__label" id="qLabel" aria-live="polite"></span>
+</header>
+
+<!-- ──────────── SCREENS ──────────── -->
+<main class="qmain">
+
+  <!-- 0 · ПРИВЕТСТВИЕ ─────────────── -->
+  <div class="qs active" id="s0">
+    <div class="qw">
+      <div class="qw__tag">
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+        Плитка NovoBricks
+      </div>
+      <h1 class="qw__h1">Узнайте <em>точную стоимость</em> плитки за&nbsp;1&nbsp;минуту</h1>
+      <p class="qw__sub">6 простых вопросов — и мы пришлём расчёт с ценой и сроками прямо в мессенджер</p>
+      <button class="qbtn qbtn--primary qbtn--lg" onclick="nav(1)">Начать расчёт →</button>
+      <div class="qw__facts">
+        <span class="qw__fact">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Займёт 1 минуту
+        </span>
+        <span class="qw__fact">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Без звонков без согласия
+        </span>
+        <span class="qw__fact">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Расчёт за 30 минут
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1 · ТИП ПЛИТКИ ──────────────── -->
+  <div class="qs" id="s1">
+    <p class="qq__hint">Вопрос 1 из 6</p>
+    <h2 class="qq__title">Какая плитка вас интересует?</h2>
+    <div class="qopts" data-q="tile_type">
+      <button class="qopt" data-v="Тротуарная">
+        <span class="qopt__ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+            <rect x="1" y="3" width="10" height="6" rx="1"/><rect x="13" y="3" width="10" height="6" rx="1"/>
+            <rect x="1" y="11" width="5" height="6" rx="1"/><rect x="8" y="11" width="8" height="6" rx="1"/><rect x="18" y="11" width="5" height="6" rx="1"/>
+          </svg>
+        </span>
+        <span class="qopt__label">Тротуарная<small>Для двора, дорожек, парковки</small></span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Облицовочная">
+        <span class="qopt__ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+            <rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/>
+            <rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/>
+          </svg>
+        </span>
+        <span class="qopt__label">Облицовочная<small>Для фасада, цоколя, отделки</small></span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Не знаю">
+        <span class="qopt__ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>
+        <span class="qopt__label">Не знаю, нужна помощь</span>
+        <span class="qopt__dot"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 2 · ГДЕ БУДЕТ (ветвление) ───── -->
+  <div class="qs" id="s2">
+    <p class="qq__hint" id="s2hint">Вопрос 2 из 6</p>
+    <h2 class="qq__title">Где будет использоваться плитка?</h2>
+
+    <!-- Тротуарная -->
+    <div class="qopts qopts--2" data-q="location" id="s2paving">
+      <button class="qopt" data-v="Двор частного дома">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        <span class="qopt__label">Двор частного дома</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Дорожки в саду">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 21 C7 14 17 14 19 21"/><path d="M7 15 C9 10 15 10 17 15"/><path d="M10 10 C11 7 13 7 14 10"/></svg></span>
+        <span class="qopt__label">Дорожки в саду</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Парковка">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+        <span class="qopt__label">Парковка</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Общественное место">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="qopt__label">Общественное место</span>
+        <span class="qopt__dot"></span>
+      </button>
+    </div>
+
+    <!-- Облицовочная -->
+    <div class="qopts qopts--2" data-q="location" id="s2cladding" style="display:none">
+      <button class="qopt" data-v="Фасад дома">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+        <span class="qopt__label">Фасад дома</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Цоколь">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2" y="14" width="20" height="8" rx="1"/><line x1="2" y1="14" x2="22" y2="14"/><rect x="4" y="6" width="16" height="8" rx="1"/></svg></span>
+        <span class="qopt__label">Цоколь</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Внутренняя отделка">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></span>
+        <span class="qopt__label">Внутренняя отделка</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Забор">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/><line x1="6" y1="3" x2="6" y2="21"/><line x1="18" y1="3" x2="18" y2="21"/></svg></span>
+        <span class="qopt__label">Забор</span>
+        <span class="qopt__dot"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 3 · ПЛОЩАДЬ ─────────────────── -->
+  <div class="qs" id="s3">
+    <p class="qq__hint" id="s3hint">Вопрос 3 из 6</p>
+    <h2 class="qq__title">Какая примерная площадь?</h2>
+    <div class="qopts" data-q="area">
+      <button class="qopt" data-v="До 30 м²">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="8" y="8" width="8" height="8" rx="1"/><rect x="3" y="3" width="18" height="18" rx="1" stroke-dasharray="3 2"/></svg></span>
+        <span class="qopt__label">До 30 м²<small>Небольшая дорожка, лоджия</small></span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="30–100 м²">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="1"/><rect x="2" y="2" width="20" height="20" rx="1" stroke-dasharray="3 2"/></svg></span>
+        <span class="qopt__label">30–100 м²<small>Двор, терраса, фасад дачи</small></span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="100–300 м²">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="1"/></svg></span>
+        <span class="qopt__label">100–300 м²<small>Большой двор, фасад дома</small></span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Больше 300 м²">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="1"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg></span>
+        <span class="qopt__label">Больше 300 м²<small>Коммерческий объект</small></span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Не знаю">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span class="qopt__label">Не знаю, помогите рассчитать</span>
+        <span class="qopt__dot"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 4 · ФОРМА ───────────────────── -->
+  <div class="qs" id="s4">
+    <p class="qq__hint" id="s4hint">Вопрос 4 из 6</p>
+    <h2 class="qq__title">Какая форма нравится?</h2>
+    <div class="qshapes" data-q="shape">
+      <button class="qshape" data-v="Брусчатка">
+        <span class="qshape__ico">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <rect x="2" y="4" width="18" height="10" rx="1.5"/><rect x="24" y="4" width="18" height="10" rx="1.5"/>
+            <rect x="2" y="18" width="9" height="10" rx="1.5"/><rect x="14" y="18" width="16" height="10" rx="1.5"/><rect x="33" y="18" width="9" height="10" rx="1.5"/>
+            <rect x="2" y="32" width="18" height="10" rx="1.5"/><rect x="24" y="32" width="18" height="10" rx="1.5"/>
+          </svg>
+        </span>
+        <span class="qshape__name">Брусчатка</span>
+      </button>
+      <button class="qshape" data-v="Английский булыжник">
+        <span class="qshape__ico">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5">
+            <ellipse cx="13" cy="13" rx="9" ry="7"/><ellipse cx="31" cy="13" rx="9" ry="7"/>
+            <ellipse cx="9" cy="31" rx="7" ry="9"/><ellipse cx="22" cy="32" rx="7" ry="9"/><ellipse cx="35" cy="31" rx="7" ry="9"/>
+          </svg>
+        </span>
+        <span class="qshape__name">Булыжник</span>
+      </button>
+      <button class="qshape" data-v="Мегаформат">
+        <span class="qshape__ico">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <rect x="3" y="3" width="38" height="38" rx="2"/>
+          </svg>
+        </span>
+        <span class="qshape__name">Мегаформат</span>
+      </button>
+      <button class="qshape" data-v="Мультиформат">
+        <span class="qshape__ico">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <rect x="2" y="2" width="20" height="20" rx="1.5"/><rect x="25" y="2" width="17" height="8" rx="1.5"/>
+            <rect x="25" y="13" width="17" height="9" rx="1.5"/>
+            <rect x="2" y="25" width="10" height="17" rx="1.5"/><rect x="15" y="25" width="27" height="17" rx="1.5"/>
+          </svg>
+        </span>
+        <span class="qshape__name">Мультиформат</span>
+      </button>
+      <button class="qshape" data-v="Волна">
+        <span class="qshape__ico">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M2 13 C8 6 14 6 22 13 C30 20 36 20 42 13"/>
+            <path d="M2 22 C8 15 14 15 22 22 C30 29 36 29 42 22"/>
+            <path d="M2 31 C8 24 14 24 22 31 C30 38 36 38 42 31"/>
+          </svg>
+        </span>
+        <span class="qshape__name">Волна</span>
+      </button>
+      <button class="qshape" data-v="Старый город">
+        <span class="qshape__ico">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 40 L4 22 A18 18 0 0 1 22 4 A18 18 0 0 1 40 22 Z"/>
+            <line x1="22" y1="40" x2="22" y2="4"/>
+            <line x1="22" y1="40" x2="4" y2="22"/>
+            <line x1="22" y1="40" x2="40" y2="22"/>
+          </svg>
+        </span>
+        <span class="qshape__name">Старый город</span>
+      </button>
+      <button class="qshape qshape--wide" data-v="Не выбрал">
+        <span class="qshape__ico">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>
+        <span class="qshape__name">Помогите выбрать</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 5 · ЦВЕТ (мультивыбор) ────────── -->
+  <div class="qs" id="s5">
+    <p class="qq__hint" id="s5hint">Вопрос 5 из 6</p>
+    <h2 class="qq__title">Какой цвет нравится?</h2>
+    <p class="qq__sub">Можно выбрать несколько вариантов</p>
+    <div class="qcolors" data-q="color" data-multi="1">
+      <button class="qclr" data-v="Серый"><div class="qclr__swatch" style="background:#9CA3AF"></div><span class="qclr__name">Серый</span></button>
+      <button class="qclr" data-v="Красный"><div class="qclr__swatch" style="background:#A93226"></div><span class="qclr__name">Красный</span></button>
+      <button class="qclr" data-v="Бежевый"><div class="qclr__swatch" style="background:#D4B896"></div><span class="qclr__name">Бежевый</span></button>
+      <button class="qclr" data-v="Коричневый"><div class="qclr__swatch" style="background:#7C5230"></div><span class="qclr__name">Коричневый</span></button>
+      <button class="qclr" data-v="Чёрный"><div class="qclr__swatch" style="background:#1F1F1F"></div><span class="qclr__name">Чёрный</span></button>
+      <button class="qclr" data-v="Белый"><div class="qclr__swatch" style="background:#F5EFE6; border-color:#CCC;"></div><span class="qclr__name">Белый</span></button>
+      <button class="qclr" data-v="Жёлтый"><div class="qclr__swatch" style="background:#C8960C"></div><span class="qclr__name">Жёлтый</span></button>
+      <button class="qclr qclr--any" data-v="Ещё не выбрал">
+        <div class="qclr__swatch" style="background:linear-gradient(135deg,#F5EFE6 0%,#9CA3AF 40%,#A93226 70%,#7C5230 100%);"></div>
+        <span class="qclr__name">Ещё не выбрал</span>
+      </button>
+    </div>
+    <div class="qclr__count" id="colorCount"></div>
+  </div>
+
+  <!-- 6 · СРОКИ ──────────────────── -->
+  <div class="qs" id="s6">
+    <p class="qq__hint" id="s6hint">Вопрос 6 из 6</p>
+    <h2 class="qq__title">Когда нужна плитка?</h2>
+    <div class="qopts qopts--2" data-q="timeline">
+      <button class="qopt" data-v="Срочно">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+        <span class="qopt__label">Срочно</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="В этом месяце">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+        <span class="qopt__label">В этом месяце</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="В этом сезоне">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+        <span class="qopt__label">В этом сезоне</span>
+        <span class="qopt__dot"></span>
+      </button>
+      <button class="qopt" data-v="Прицениваюсь">
+        <span class="qopt__ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <span class="qopt__label">Прицениваюсь</span>
+        <span class="qopt__dot"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 7 · КОНТАКТЫ ───────────────── -->
+  <div class="qs" id="s7">
+    <p class="qq__hint">Последний шаг</p>
+    <h2 class="qq__title">Готово! Куда прислать расчёт?</h2>
+    <p class="qq__sub">Пришлём цену и сроки в течение 30 минут</p>
+    <form class="qform" id="quizForm" onsubmit="submitForm(event)">
+      <div class="qfield">
+        <label class="qfield__label">Ваше имя</label>
+        <input type="text" class="qinput" name="name" placeholder="Как вас зовут?" required autocomplete="name">
+      </div>
+      <div class="qfield">
+        <label class="qfield__label">Телефон</label>
+        <input type="tel" class="qinput js-phone" name="phone" placeholder="+7 (___) ___-__-__" required autocomplete="tel">
+      </div>
+      <div class="qfield">
+        <label class="qfield__label">Куда удобнее прислать?</label>
+        <div class="qradios">
+          <label class="qradio"><input type="radio" name="via" value="WhatsApp" checked> WhatsApp</label>
+          <label class="qradio"><input type="radio" name="via" value="Telegram"> Telegram</label>
+          <label class="qradio"><input type="radio" name="via" value="Звонок"> Позвоните мне</label>
+        </div>
+      </div>
+      <button type="submit" id="hiddenSub" style="display:none"></button>
+    </form>
+  </div>
+
+  <!-- 8 · СПАСИБО ────────────────── -->
+  <div class="qs" id="s8">
+    <div class="qthanks">
+      <div class="qthanks__circle">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h2 class="qthanks__h2">Спасибо! Расчёт готовим.</h2>
+      <p class="qthanks__sub">Пришлём результат в течение 30 минут. А пока посмотрите наши готовые объекты:</p>
+      <div class="qgallery">
+        <div class="qgallery__item" style="background-image:url('images/Портфолио/плитка1.jpg')"></div>
+        <div class="qgallery__item" style="background-image:url('images/Портфолио/плитка2.jpg')"></div>
+        <div class="qgallery__item" style="background-image:url('images/Портфолио/плитка3.jpg')"></div>
+        <div class="qgallery__item" style="background-image:url('images/Портфолио/оплитка1.jpg')"></div>
+        <div class="qgallery__item" style="background-image:url('images/Портфолио/оплитка2.jpg')"></div>
+        <div class="qgallery__item" style="background-image:url('images/Портфолио/кирпич1.jpg')"></div>
+      </div>
+      <a href="index.html" class="qbtn qbtn--primary qbtn--lg">На главную →</a>
+    </div>
+  </div>
+
+</main>
+
+<!-- ──────────── FOOTER NAV ──────────── -->
+<div class="qfooter" id="qFooter">
+  <button class="qbtn qbtn--ghost inv" id="btnBack" onclick="goBack()">← Назад</button>
+  <button class="qbtn qbtn--primary" id="btnNext" onclick="goNext()" disabled>Далее →</button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+let cur  = 0;
+const ans  = {};
+let busy   = false;
+
+/* ═══════════════════════════════════════════════
+   ELEMENTS
+═══════════════════════════════════════════════ */
+const qBar    = document.getElementById('qBar');
+const qProg   = document.getElementById('qProgress');
+const qLabel  = document.getElementById('qLabel');
+const btnBack = document.getElementById('btnBack');
+const btnNext = document.getElementById('btnNext');
+const qFooter = document.getElementById('qFooter');
+
+/* ═══════════════════════════════════════════════
+   PHONE MASK
+═══════════════════════════════════════════════ */
+document.querySelectorAll('.js-phone').forEach(el => {
+  el.addEventListener('input', e => {
+    let v = e.target.value.replace(/\D/g, '');
+    if (v.startsWith('7') || v.startsWith('8')) v = v.slice(1);
+    v = v.slice(0, 10);
+    let out = '+7 ';
+    if (v.length > 0) out += '(' + v.slice(0, 3);
+    if (v.length >= 3) out += ') ' + v.slice(3, 6);
+    if (v.length >= 6) out += '-' + v.slice(6, 8);
+    if (v.length >= 8) out += '-' + v.slice(8, 10);
+    e.target.value = out;
+    syncNext();
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   SCREEN 2 BRANCHING
+   Show/hide option sets based on tile_type answer.
+   Clear location answer when tile type changes.
+═══════════════════════════════════════════════ */
+function updateS2() {
+  const cladding = ans.tile_type === 'Облицовочная';
+  const paving   = document.getElementById('s2paving');
+  const clad     = document.getElementById('s2cladding');
+  paving.style.display = cladding ? 'none' : '';
+  clad.style.display   = cladding ? '' : 'none';
+
+  if (ans._lastTileType !== ans.tile_type) {
+    ans._lastTileType = ans.tile_type;
+    delete ans.location;
+    paving.querySelectorAll('.qopt').forEach(o => o.classList.remove('sel'));
+    clad.querySelectorAll('.qopt').forEach(o => o.classList.remove('sel'));
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   STEP COUNTER
+   "Не знаю" skips s2 → total 5 steps instead of 6
+═══════════════════════════════════════════════ */
+function stepInfo(screenIdx) {
+  if (ans.tile_type === 'Не знаю') {
+    const map = { 1: 1, 3: 2, 4: 3, 5: 4, 6: 5 };
+    return { n: map[screenIdx] || screenIdx, total: 5 };
+  }
+  return { n: screenIdx, total: 6 };
+}
+
+/* ═══════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════ */
+function sc(n) { return document.getElementById('s' + n); }
+
+function nav(next, dir) {
+  if (dir === undefined) dir = next > cur ? 1 : -1;
+  if (busy) return;
+  busy = true;
+  const outEl = sc(cur);
+  const inEl  = sc(next);
+  outEl.classList.add(dir > 0 ? 'anim-out-l' : 'anim-out-r');
+  setTimeout(() => {
+    outEl.classList.remove('active', 'anim-out-l', 'anim-out-r');
+    cur = next;
+    if (cur === 2) updateS2();
+    inEl.classList.add('active', dir > 0 ? 'anim-in-r' : 'anim-in-l');
+    updateUI();
+    setTimeout(() => {
+      inEl.classList.remove('anim-in-r', 'anim-in-l');
+      busy = false;
+    }, 360);
+  }, 230);
+}
+
+function goNext() {
+  if (cur === 0) { nav(1); return; }
+  if (cur === 7) { document.getElementById('hiddenSub').click(); return; }
+  if (cur >= 8)  return;
+  /* skip s2 when user doesn't know tile type */
+  if (cur === 1 && ans.tile_type === 'Не знаю') { nav(3); return; }
+  nav(cur + 1);
+}
+
+function goBack() {
+  if (cur <= 0) return;
+  if (cur === 1) { nav(0); return; }
+  /* skip back over s2 when it was not shown */
+  if (cur === 3 && ans.tile_type === 'Не знаю') { nav(1); return; }
+  nav(cur - 1);
+}
+
+/* ═══════════════════════════════════════════════
+   UI SYNC
+═══════════════════════════════════════════════ */
+function updateUI() {
+  const isThanks  = cur === 8;
+  const isContact = cur === 7;
+  const isQ       = cur >= 1 && cur <= 6;
+
+  if (isQ) {
+    const { n, total } = stepInfo(cur);
+    qProg.style.visibility = 'visible';
+    qBar.style.width = (n / total * 100) + '%';
+    qLabel.textContent = 'Шаг ' + n + ' из ' + total;
+    /* refresh hint text on all question screens */
+    [2, 3, 4, 5, 6].forEach(si => {
+      const hint = document.getElementById('s' + si + 'hint');
+      if (hint) {
+        const { n: hn, total: ht } = stepInfo(si);
+        hint.textContent = 'Вопрос ' + hn + ' из ' + ht;
+      }
+    });
+  } else if (isContact) {
+    qProg.style.visibility = 'visible';
+    qBar.style.width = '100%';
+    qLabel.textContent = 'Последний шаг';
+  } else {
+    qProg.style.visibility = 'hidden';
+    qLabel.textContent = '';
+  }
+
+  qFooter.classList.toggle('hide', isThanks);
+  btnBack.classList.toggle('inv', cur === 0 || isThanks);
+
+  if (cur === 0)      btnNext.textContent = 'Начать расчёт →';
+  else if (cur === 7) btnNext.textContent = 'Получить расчёт →';
+  else                btnNext.textContent = 'Далее →';
+
+  syncNext();
+}
+
+function syncNext() {
+  if (cur === 0) { btnNext.disabled = false; return; }
+  if (cur === 8) { btnNext.disabled = true;  return; }
+
+  if (cur === 5) {
+    const c = ans.color;
+    btnNext.disabled = !c || c.length === 0;
+    return;
+  }
+  if (cur === 7) {
+    const f   = document.getElementById('quizForm');
+    const nm  = f?.querySelector('[name="name"]')?.value.trim();
+    const ph  = f?.querySelector('[name="phone"]')?.value.replace(/\D/g, '');
+    btnNext.disabled = !nm || !ph || ph.length < 10;
+    return;
+  }
+  const keyMap = { 1: 'tile_type', 2: 'location', 3: 'area', 4: 'shape', 6: 'timeline' };
+  const key = keyMap[cur];
+  btnNext.disabled = key ? !ans[key] : false;
+}
+
+/* ═══════════════════════════════════════════════
+   SINGLE-SELECT CLICKS (options + shapes)
+═══════════════════════════════════════════════ */
+document.querySelectorAll('[data-q]:not([data-multi])').forEach(container => {
+  const key = container.dataset.q;
+  container.querySelectorAll('.qopt, .qshape').forEach(opt => {
+    opt.addEventListener('click', () => {
+      container.querySelectorAll('.qopt, .qshape').forEach(o => o.classList.remove('sel'));
+      opt.classList.add('sel');
+      ans[key] = opt.dataset.v;
+      syncNext();
+      setTimeout(goNext, 360);
+    });
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   COLOR MULTI-SELECT
+═══════════════════════════════════════════════ */
+const colorGrid  = document.querySelector('[data-multi]');
+const colorCount = document.getElementById('colorCount');
+
+if (colorGrid) {
+  colorGrid.querySelectorAll('.qclr').forEach(card => {
+    card.addEventListener('click', () => {
+      const isAny = card.dataset.v === 'Ещё не выбрал';
+      if (isAny) {
+        colorGrid.querySelectorAll('.qclr').forEach(c => c.classList.remove('sel'));
+        card.classList.add('sel');
+        ans.color = ['Ещё не выбрал'];
+      } else {
+        const anyCard = colorGrid.querySelector('[data-v="Ещё не выбрал"]');
+        if (anyCard) anyCard.classList.remove('sel');
+        card.classList.toggle('sel');
+        ans.color = [...colorGrid.querySelectorAll('.qclr.sel')].map(c => c.dataset.v);
+      }
+      const n = ans.color ? ans.color.length : 0;
+      colorCount.textContent = (!n || ans.color[0] === 'Ещё не выбрал')
+        ? '' : 'Выбрано: ' + n + (n === 1 ? ' цвет' : n < 5 ? ' цвета' : ' цветов');
+      syncNext();
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   CONTACT FORM LIVE VALIDATION
+═══════════════════════════════════════════════ */
+document.getElementById('quizForm')?.querySelectorAll('input:not([type=radio])').forEach(el => {
+  el.addEventListener('input', syncNext);
+});
+
+/* ═══════════════════════════════════════════════
+   TELEGRAM
+═══════════════════════════════════════════════ */
+const TG_TOKEN   = '8650746508:AAEUc9iDvWD0GdGGcSaHHZFMphuwaaQqT7g';
+const TG_CHAT_ID = '490873482';
+const TG_API     = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+
+async function sendToTelegram(text) {
+  try {
+    await fetch(TG_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CHAT_ID, text, parse_mode: 'Markdown' }),
+    });
+  } catch {}
+}
+
+/* ═══════════════════════════════════════════════
+   SUBMIT
+═══════════════════════════════════════════════ */
+async function submitForm(e) {
+  e.preventDefault();
+  const f = e.target;
+  const name  = f.querySelector('[name="name"]').value;
+  const phone = f.querySelector('[name="phone"]').value;
+  const via   = f.querySelector('[name="via"]:checked')?.value || '';
+
+  let text =
+    `🔔 *Заявка из квиза — Плитка*\n\n` +
+    `👤 *Имя:* ${name || '—'}\n` +
+    `📞 *Телефон:* ${phone || '—'}`;
+  if (via) text += `\n📲 *Связь:* ${via}`;
+
+  const labels = {
+    tile_type: 'Тип плитки',
+    location:  'Место применения',
+    area:      'Площадь',
+    shape:     'Форма',
+    color:     'Цвет',
+    timeline:  'Сроки',
+  };
+  text += `\n\n📝 *Ответы:*`;
+  Object.entries(labels).forEach(([key, label]) => {
+    const val = ans[key];
+    if (val) {
+      const v = Array.isArray(val) ? val.join(', ') : val;
+      text += `\n• ${label}: ${v}`;
+    }
+  });
+
+  await sendToTelegram(text);
+  nav(8);
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+updateUI();
+</script>
+</body>
+</html>
