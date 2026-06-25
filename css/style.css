@@ -1896,6 +1896,20 @@ h1, h2, h3, h4 {
   .gallery__grid         { grid-template-columns: 1fr; }
   .reviews__wrap         { flex-direction: column; }
   .reviews__arrow        { width: 40px; height: 40px; }
+
+  /* ── GUARANTEES: fix text overflow on small screens ── */
+  .guarantees__grid      { gap: var(--space-2); }
+  .guarantee-item        { padding: var(--space-4) var(--space-3); }
+  .guarantee-item__icon svg { width: 32px; height: 32px; }
+  .guarantee-item h3     { font-size: 1.05rem; }
+  .guarantee-item p      { font-size: 0.75rem; line-height: 1.5; }
+
+  /* ── COMPARISON: equal card sizes + breathing room from walls ── */
+  .comparison .container { padding-left: var(--space-4); padding-right: var(--space-4); }
+  .comparison__grid      { gap: var(--space-3); }
+  .comparison__card      { aspect-ratio: 4/5; padding: var(--space-4) var(--space-3); }
+  .comparison__mult      { font-size: clamp(2rem, 10vw, 3rem); }
+  .comparison__label     { font-size: 0.7rem; }
 }
 
 /* ================================
@@ -1959,9 +1973,12 @@ h1, h2, h3, h4 {
 @media (max-width: 767px) {
 
   /* ── HERO ── */
+  .hero__inner {
+    padding: var(--space-8) 0;
+  }
   .hero__content {
     max-width: 100%;
-    padding: var(--space-8) 0 var(--space-12);
+    padding: 0 0 var(--space-6);
   }
   .hero .container {
     padding-left: var(--space-4);
