@@ -1982,9 +1982,12 @@ h1, h2, h3, h4 {
   }
 
   /* ── SLIDERS ── */
+  body { overflow-x: hidden; }
   .sl-arrow    { display: flex; }
-  .sl-outer    { padding: 0 40px; }
-  .sl-viewport { overflow: hidden; } /* hide overflow only on mobile */
+  .sl-outer    { padding: 0; overflow: hidden; } /* arrows overlay content, no side padding */
+  .sl-arrow--prev { left: 6px; }
+  .sl-arrow--next { right: 6px; }
+  .sl-viewport { overflow: hidden; }
 
   /* Products: JS sets item widths; flex mode */
   #productsTrack {
@@ -1993,8 +1996,10 @@ h1, h2, h3, h4 {
     gap: 0 !important;
     will-change: transform;
   }
-  #productsTrack .product-card__body { padding: var(--space-4); }
-  #productsTrack .product-card__title { font-size: var(--text-2xl); }
+  #productsTrack .product-card__body  { padding: var(--space-3) var(--space-4); }
+  #productsTrack .product-card__title { font-size: var(--text-xl); }
+  #productsTrack .product-card__desc  { font-size: var(--text-sm); margin-bottom: var(--space-3); }
+  #productsTrack .product-card__price { font-size: var(--text-sm); margin-bottom: var(--space-3); }
 
   /* Palette: JS sets item widths; disable hover lift (would be clipped) */
   #paletteTrack {
@@ -2005,6 +2010,8 @@ h1, h2, h3, h4 {
     will-change: transform;
   }
   #paletteTrack .swatch { padding: 0 6px; box-sizing: border-box; }
+  #paletteTrack .swatch__color { max-height: 100px; }
+  #paletteTrack .swatch span { font-size: 0.7rem; }
   #paletteTrack .swatch:hover { transform: none; }
   #paletteTrack .swatch:hover .swatch__color { box-shadow: none; }
 
@@ -2018,8 +2025,8 @@ h1, h2, h3, h4 {
   #galleryTrack .gallery__item { border-radius: var(--radius-md); }
 
   /* ── REVIEWS ── */
-  .reviews__wrap    { gap: var(--space-2); max-width: 100%; }
-  .reviews__viewport { overflow: hidden; width: 0; flex: 1; } /* force definite width */
+  .reviews__wrap    { gap: var(--space-2); max-width: 100%; overflow: hidden; }
+  .reviews__viewport { overflow: hidden; flex: 1; min-width: 0; align-self: stretch; }
   .reviews__arrow   { width: 36px; height: 36px; font-size: 1.4rem; flex-shrink: 0; }
   .review-card      { padding: var(--space-4); box-sizing: border-box; }
   .review-card__top { flex-wrap: wrap; row-gap: 4px; }
