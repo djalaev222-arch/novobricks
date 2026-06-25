@@ -252,3 +252,67 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 
 $$('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ─── MOBILE INFINITE SLIDERS ───────────── */
+function initSlider(trackId, prevId, nextId, perPage) {
+  if (window.innerWidth > 768) return;
+
+  const track   = $(trackId);
+  const prevBtn = $(prevId);
+  const nextBtn = $(nextId);
+  if (!track || !prevBtn || !nextBtn) return;
+
+  const origItems = Array.from(track.children);
+  const total     = origItems.length;
+
+  // Prefix clones: last perPage originals inserted at start
+  origItems.slice(-perPage).forEach(el => {
+    const c = el.cloneNode(true);
+    c.classList.add('sl-clone');
+    c.setAttribute('aria-hidden', 'true');
+    track.insertBefore(c, track.firstChild);
+  });
+
+  // Suffix clones: first perPage originals appended at end
+  origItems.slice(0, perPage).forEach(el => {
+    const c = el.cloneNode(true);
+    c.classList.add('sl-clone');
+    c.setAttribute('aria-hidden', 'true');
+    track.appendChild(c);
+  });
+
+  let cur  = perPage; // start after prefix clones
+  let busy = false;
+
+  function itemW() {
+    return track.children[cur] ? track.children[cur].offsetWidth : 0;
+  }
+
+  function setPos(animate) {
+    track.style.transition = animate
+      ? 'transform 0.42s cubic-bezier(0.16,1,0.3,1)'
+      : 'none';
+    track.style.transform = `translateX(-${cur * itemW()}px)`;
+    if (!animate) void track.offsetWidth; // force reflow
+  }
+
+  function go(dir) {
+    if (busy) return;
+    busy = true;
+    cur += dir * perPage;
+    setPos(true);
+    setTimeout(() => {
+      if (cur >= total + perPage) { cur = perPage; setPos(false); }
+      if (cur < perPage)          { cur = total;   setPos(false); }
+      busy = false;
+    }, 450);
+  }
+
+  prevBtn.addEventListener('click', () => go(-1));
+  nextBtn.addEventListener('click', () => go(1));
+  setPos(false);
+}
+
+initSlider('productsTrack', 'productsPrev', 'productsNext', 1);
+initSlider('paletteTrack',  'palettePrev',  'paletteNext',  2);
+initSlider('galleryTrack',  'galleryPrev',  'galleryNext',  1);

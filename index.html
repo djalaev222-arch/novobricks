@@ -151,7 +151,10 @@
       <p class="section__label">Наша продукция</p>
       <h2 class="section__title">Что мы производим</h2>
     </div>
-    <div class="products__grid products__grid--3">
+    <div class="sl-outer" id="productsSlider">
+      <button class="sl-arrow sl-arrow--prev" id="productsPrev" aria-label="Назад">&#8249;</button>
+      <div class="sl-viewport">
+    <div class="products__grid products__grid--3 sl-track" id="productsTrack">
 
       <div class="product-card">
         <div class="product-card__image product-card__image--brick"></div>
@@ -184,6 +187,9 @@
       </div>
 
     </div>
+      </div><!-- /sl-viewport -->
+      <button class="sl-arrow sl-arrow--next" id="productsNext" aria-label="Вперёд">&#8250;</button>
+    </div><!-- /sl-outer -->
   </div>
 </section>
 
@@ -196,7 +202,10 @@
       <p class="section__label">Цвета</p>
       <h2 class="section__title"><span class="palette__num">14</span> цветов на любой вкус</h2>
     </div>
-    <div class="palette__grid">
+    <div class="sl-outer" id="paletteSlider">
+      <button class="sl-arrow sl-arrow--prev" id="palettePrev" aria-label="Назад">&#8249;</button>
+      <div class="sl-viewport">
+    <div class="palette__grid sl-track" id="paletteTrack">
       <div class="swatch"><div class="swatch__color" style="background:#F5EFE6"></div><span>Белый</span></div>
       <div class="swatch"><div class="swatch__color" style="background:#EDE0CC"></div><span>Слоновая кость</span></div>
       <div class="swatch"><div class="swatch__color" style="background:#D4B896"></div><span>Бежевый</span></div>
@@ -211,7 +220,10 @@
       <div class="swatch"><div class="swatch__color" style="background:#4A7A3A"></div><span>Зелёный</span></div>
       <div class="swatch"><div class="swatch__color" style="background:#9B9B9B"></div><span>Серый</span></div>
       <div class="swatch"><div class="swatch__color" style="background:#2A2A2A"></div><span>Чёрный</span></div>
-    </div>
+    </div><!-- /palette__grid -->
+      </div><!-- /sl-viewport -->
+      <button class="sl-arrow sl-arrow--next" id="paletteNext" aria-label="Вперёд">&#8250;</button>
+    </div><!-- /sl-outer -->
   </div>
 </section>
 
@@ -274,7 +286,10 @@
       <p class="section__label">Портфолио</p>
       <h2 class="section__title">Наши объекты</h2>
     </div>
-    <div class="gallery__grid">
+    <div class="sl-outer" id="gallerySlider">
+      <button class="sl-arrow sl-arrow--prev" id="galleryPrev" aria-label="Назад">&#8249;</button>
+      <div class="sl-viewport">
+    <div class="gallery__grid sl-track" id="galleryTrack">
       <div class="gallery__item" data-index="0" data-caption="Жилой дом, Уфа — Кирпич «Красный»"            style="background-image:url('images/Портфолио/кирпич1.jpg')"></div>
       <div class="gallery__item" data-index="1" data-caption="Коттедж, Белорецк — Кирпич «Коричневый»"      style="background-image:url('images/Портфолио/кирпич2.jpg')"></div>
       <div class="gallery__item" data-index="2" data-caption="ТЦ, Стерлитамак — Кирпич «Серый»"            style="background-image:url('images/Портфолио/кирпич3.jpg')"></div>
@@ -284,7 +299,10 @@
       <div class="gallery__item" data-index="6" data-caption="Детский сад, Салават — Тротуарная плитка"    style="background-image:url('images/Портфолио/плитка1.jpg')"></div>
       <div class="gallery__item" data-index="7" data-caption="Дорожки и патио, Уфа — Тротуарная плитка"   style="background-image:url('images/Портфолио/плитка2.jpg')"></div>
       <div class="gallery__item" data-index="8" data-caption="Бизнес-центр, Уфа — Тротуарная плитка"      style="background-image:url('images/Портфолио/плитка3.jpg')"></div>
-    </div>
+    </div><!-- /gallery__grid -->
+      </div><!-- /sl-viewport -->
+      <button class="sl-arrow sl-arrow--next" id="galleryNext" aria-label="Вперёд">&#8250;</button>
+    </div><!-- /sl-outer -->
   </div>
 </section>
 

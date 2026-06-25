@@ -1919,3 +1919,132 @@ h1, h2, h3, h4 {
 .guarantee-item:hover .icon-refresh { animation: icon-spin   0.6s linear; }
 .guarantee-item:hover .icon-truck   { animation: icon-slide  0.6s ease; }
 .guarantee-item:hover .icon-file    { animation: icon-pulse  0.5s ease; }
+
+/* ================================
+   MOBILE SLIDER COMPONENT
+================================ */
+.sl-outer   { position: relative; }
+.sl-viewport { overflow: hidden; }
+.sl-clone   { pointer-events: none; user-select: none; }
+
+/* Arrows — hidden on desktop, shown on mobile */
+.sl-arrow {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--dark);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+.sl-arrow:hover { background: var(--orange); border-color: var(--orange); color: var(--white); }
+.sl-arrow--prev { left: 0; }
+.sl-arrow--next { right: 0; }
+
+/* ================================
+   MOBILE: hero + slider + reviews
+================================ */
+@media (max-width: 768px) {
+
+  /* ── HERO ── */
+  .hero__content {
+    max-width: 100%;
+    padding: var(--space-8) 0 var(--space-12);
+  }
+  .hero .container {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+    max-width: 100%;
+  }
+  .hero__title { font-size: clamp(1.9rem, 7.5vw, 2.8rem); }
+  .hero__desc  { font-size: var(--text-base); }
+  .btn--lg     { padding: 0.75rem 1.5rem; font-size: var(--text-base); }
+  .hero__facts { grid-template-columns: 1fr; gap: var(--space-2); }
+  .hero__bg {
+    background: linear-gradient(
+      to bottom,
+      rgba(26,26,26,0.94) 0%,
+      rgba(26,26,26,0.85) 55%,
+      rgba(26,26,26,0.62) 100%
+    );
+  }
+
+  /* ── SLIDERS ── */
+  .sl-arrow { display: flex; }
+  .sl-outer { padding: 0 42px; }
+
+  /* Products: 1 card per slide */
+  #productsTrack {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+    will-change: transform;
+  }
+  #productsTrack .product-card {
+    min-width: 100%;
+    flex-shrink: 0;
+  }
+
+  /* Palette: 2 swatches per slide, no flex gap (padding used instead) */
+  #paletteTrack {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+    align-items: flex-start;
+    will-change: transform;
+  }
+  #paletteTrack .swatch {
+    min-width: 50%;
+    flex-shrink: 0;
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+
+  /* Gallery: 1 item per slide */
+  #galleryTrack {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+    will-change: transform;
+  }
+  #galleryTrack .gallery__item {
+    min-width: 100%;
+    flex-shrink: 0;
+    border-radius: var(--radius-md);
+  }
+
+  /* ── REVIEWS ── */
+  .reviews__wrap   { gap: var(--space-2); max-width: 100%; }
+  .reviews__arrow  { width: 36px; height: 36px; font-size: 1.4rem; flex-shrink: 0; }
+  .review-card     { padding: var(--space-4); }
+  .review-card__top { flex-wrap: wrap; row-gap: 4px; }
+  .review-card__date {
+    flex-basis: 100%;
+    padding-left: 60px;
+    white-space: normal;
+    font-size: var(--text-xs);
+    margin-top: -2px;
+  }
+  .review-card__product { font-size: 0.75rem; }
+  .review-card__text    { font-size: var(--text-sm); }
+
+  /* ── MISC SECTION FIXES ── */
+  .stats-dark__grid      { grid-template-columns: repeat(2, 1fr); }
+  .comparison__grid      { grid-template-columns: repeat(2, 1fr); }
+  .guarantees__grid      { grid-template-columns: repeat(2, 1fr); }
+  .production__inner     { grid-template-columns: 1fr; }
+  .section__head         { margin-bottom: var(--space-8); }
+  .faq-question          { padding: var(--space-4); font-size: var(--text-sm); }
+}
