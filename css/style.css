@@ -1923,11 +1923,11 @@ h1, h2, h3, h4 {
 /* ================================
    MOBILE SLIDER COMPONENT
 ================================ */
-.sl-outer   { position: relative; }
-.sl-viewport { overflow: hidden; }
-.sl-clone   { pointer-events: none; user-select: none; }
+.sl-outer    { position: relative; }
+.sl-viewport { overflow: visible; } /* visible on desktop so hover/shadows aren't clipped */
+.sl-clone    { pointer-events: none; user-select: none; }
 
-/* Arrows — hidden on desktop, shown on mobile */
+/* Arrows — hidden on desktop, shown on mobile (≤767px) */
 .sl-arrow {
   display: none;
   position: absolute;
@@ -1954,9 +1954,9 @@ h1, h2, h3, h4 {
 .sl-arrow--next { right: 0; }
 
 /* ================================
-   MOBILE: hero + slider + reviews
+   MOBILE: hero + slider + reviews  (≤767px so 768px iPad uses desktop grid)
 ================================ */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
   /* ── HERO ── */
   .hero__content {
@@ -1968,9 +1968,9 @@ h1, h2, h3, h4 {
     padding-right: var(--space-4);
     max-width: 100%;
   }
-  .hero__title { font-size: clamp(1.9rem, 7.5vw, 2.8rem); }
-  .hero__desc  { font-size: var(--text-base); }
-  .btn--lg     { padding: 0.75rem 1.5rem; font-size: var(--text-base); }
+  .hero__title { font-size: clamp(1.75rem, 7vw, 2.6rem); }
+  .hero__desc  { font-size: 0.9rem; }
+  .btn--lg     { padding: 0.7rem 1.25rem; font-size: 0.9rem; }
   .hero__facts { grid-template-columns: 1fr; gap: var(--space-2); }
   .hero__bg {
     background: linear-gradient(
@@ -1982,22 +1982,21 @@ h1, h2, h3, h4 {
   }
 
   /* ── SLIDERS ── */
-  .sl-arrow { display: flex; }
-  .sl-outer { padding: 0 42px; }
+  .sl-arrow    { display: flex; }
+  .sl-outer    { padding: 0 40px; }
+  .sl-viewport { overflow: hidden; } /* hide overflow only on mobile */
 
-  /* Products: 1 card per slide */
+  /* Products: JS sets item widths; flex mode */
   #productsTrack {
     display: flex !important;
     grid-template-columns: none !important;
     gap: 0 !important;
     will-change: transform;
   }
-  #productsTrack .product-card {
-    min-width: 100%;
-    flex-shrink: 0;
-  }
+  #productsTrack .product-card__body { padding: var(--space-4); }
+  #productsTrack .product-card__title { font-size: var(--text-2xl); }
 
-  /* Palette: 2 swatches per slide, no flex gap (padding used instead) */
+  /* Palette: JS sets item widths; disable hover lift (would be clipped) */
   #paletteTrack {
     display: flex !important;
     grid-template-columns: none !important;
@@ -2005,30 +2004,24 @@ h1, h2, h3, h4 {
     align-items: flex-start;
     will-change: transform;
   }
-  #paletteTrack .swatch {
-    min-width: 50%;
-    flex-shrink: 0;
-    padding: 0 8px;
-    box-sizing: border-box;
-  }
+  #paletteTrack .swatch { padding: 0 6px; box-sizing: border-box; }
+  #paletteTrack .swatch:hover { transform: none; }
+  #paletteTrack .swatch:hover .swatch__color { box-shadow: none; }
 
-  /* Gallery: 1 item per slide */
+  /* Gallery: JS sets item widths */
   #galleryTrack {
     display: flex !important;
     grid-template-columns: none !important;
     gap: 0 !important;
     will-change: transform;
   }
-  #galleryTrack .gallery__item {
-    min-width: 100%;
-    flex-shrink: 0;
-    border-radius: var(--radius-md);
-  }
+  #galleryTrack .gallery__item { border-radius: var(--radius-md); }
 
   /* ── REVIEWS ── */
-  .reviews__wrap   { gap: var(--space-2); max-width: 100%; }
-  .reviews__arrow  { width: 36px; height: 36px; font-size: 1.4rem; flex-shrink: 0; }
-  .review-card     { padding: var(--space-4); }
+  .reviews__wrap    { gap: var(--space-2); max-width: 100%; }
+  .reviews__viewport { overflow: hidden; width: 0; flex: 1; } /* force definite width */
+  .reviews__arrow   { width: 36px; height: 36px; font-size: 1.4rem; flex-shrink: 0; }
+  .review-card      { padding: var(--space-4); box-sizing: border-box; }
   .review-card__top { flex-wrap: wrap; row-gap: 4px; }
   .review-card__date {
     flex-basis: 100%;
@@ -2038,13 +2031,13 @@ h1, h2, h3, h4 {
     margin-top: -2px;
   }
   .review-card__product { font-size: 0.75rem; }
-  .review-card__text    { font-size: var(--text-sm); }
+  .review-card__text    { font-size: var(--text-sm); line-height: 1.65; }
 
   /* ── MISC SECTION FIXES ── */
-  .stats-dark__grid      { grid-template-columns: repeat(2, 1fr); }
-  .comparison__grid      { grid-template-columns: repeat(2, 1fr); }
-  .guarantees__grid      { grid-template-columns: repeat(2, 1fr); }
-  .production__inner     { grid-template-columns: 1fr; }
-  .section__head         { margin-bottom: var(--space-8); }
-  .faq-question          { padding: var(--space-4); font-size: var(--text-sm); }
+  .stats-dark__grid  { grid-template-columns: repeat(2, 1fr); }
+  .comparison__grid  { grid-template-columns: repeat(2, 1fr); }
+  .guarantees__grid  { grid-template-columns: repeat(2, 1fr); }
+  .production__inner { grid-template-columns: 1fr; }
+  .section__head     { margin-bottom: var(--space-8); }
+  .faq-question      { padding: var(--space-4); font-size: var(--text-sm); }
 }

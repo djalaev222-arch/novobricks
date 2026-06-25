@@ -255,21 +255,36 @@ $$('.reveal').forEach(el => revealObserver.observe(el));
 
 /* ─── MOBILE INFINITE SLIDERS ───────────── */
 function initSlider(trackId, prevId, nextId, perPage) {
-  if (window.innerWidth > 768) return;
+  if (window.innerWidth > 767) return; // ≥768px uses desktop grid
 
   const track   = $(trackId);
   const prevBtn = $(prevId);
   const nextBtn = $(nextId);
   if (!track || !prevBtn || !nextBtn) return;
 
+  const viewport = track.parentElement; // .sl-viewport
+  const vpW = viewport.offsetWidth;
+  if (!vpW) return;
+
+  // Pixel width per item (avoids flex % resolution issues)
+  const iW = Math.floor(vpW / perPage);
+
+  function sizeEl(el) {
+    el.style.width    = iW + 'px';
+    el.style.minWidth = iW + 'px';
+    el.style.flexShrink = '0';
+  }
+
   const origItems = Array.from(track.children);
-  const total     = origItems.length;
+  origItems.forEach(sizeEl);
+  const total = origItems.length;
 
   // Prefix clones: last perPage originals inserted at start
   origItems.slice(-perPage).forEach(el => {
     const c = el.cloneNode(true);
     c.classList.add('sl-clone');
     c.setAttribute('aria-hidden', 'true');
+    sizeEl(c);
     track.insertBefore(c, track.firstChild);
   });
 
@@ -278,22 +293,19 @@ function initSlider(trackId, prevId, nextId, perPage) {
     const c = el.cloneNode(true);
     c.classList.add('sl-clone');
     c.setAttribute('aria-hidden', 'true');
+    sizeEl(c);
     track.appendChild(c);
   });
 
-  let cur  = perPage; // start after prefix clones
+  let cur  = perPage;
   let busy = false;
-
-  function itemW() {
-    return track.children[cur] ? track.children[cur].offsetWidth : 0;
-  }
 
   function setPos(animate) {
     track.style.transition = animate
       ? 'transform 0.42s cubic-bezier(0.16,1,0.3,1)'
       : 'none';
-    track.style.transform = `translateX(-${cur * itemW()}px)`;
-    if (!animate) void track.offsetWidth; // force reflow
+    track.style.transform = `translateX(-${cur * iW}px)`;
+    if (!animate) void track.offsetWidth;
   }
 
   function go(dir) {
@@ -316,3 +328,34 @@ function initSlider(trackId, prevId, nextId, perPage) {
 initSlider('productsTrack', 'productsPrev', 'productsNext', 1);
 initSlider('paletteTrack',  'palettePrev',  'paletteNext',  2);
 initSlider('galleryTrack',  'galleryPrev',  'galleryNext',  1);
+
+/* ─── FIX REVIEW CARD WIDTHS ON MOBILE ─── */
+(function fixReviews() {
+  if (window.innerWidth > 767) return;
+  const vp = document.querySelector('.reviews__viewport');
+  if (!vp) return;
+  const w = vp.offsetWidth;
+  if (!w) return;
+  $$('.review-card').forEach(c => {
+    c.style.minWidth = w + 'px';
+    c.style.width    = w + 'px';
+    c.style.boxSizing = 'border-box';
+  });
+  // Re-bind goToReview to use pixel translation
+  const track = $('reviewsTrack');
+  if (!track) return;
+  const origGo = window._goToReview;
+  const total  = track.children.length;
+  let idx = 0;
+  function goTo(i) {
+    idx = ((i % total) + total) % total;
+    track.style.transform = `translateX(-${idx * w}px)`;
+    const dots = document.querySelectorAll('.reviews__dot');
+    dots.forEach((d, j) => d.classList.toggle('active', j === idx));
+  }
+  $('reviewPrev') && ($('reviewPrev').onclick = () => goTo(idx - 1));
+  $('reviewNext') && ($('reviewNext').onclick = () => goTo(idx + 1));
+  document.querySelectorAll('.reviews__dot').forEach((d, i) => {
+    d.onclick = () => goTo(i);
+  });
+})();
