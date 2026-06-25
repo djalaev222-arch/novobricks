@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -636,7 +637,7 @@
         <div class="qgallery__item" style="background-image:url('images/Портфолио/плитка1.jpg')"></div>
         <div class="qgallery__item" style="background-image:url('images/Портфолио/плитка2.jpg')"></div>
       </div>
-      <a href="index.html" class="qbtn qbtn--primary qbtn--lg">На главную →</a>
+      <button class="qbtn qbtn--primary qbtn--lg" onclick="handleThanksBtn()">На главную →</button>
     </div>
   </div>
 
@@ -763,6 +764,12 @@ function updateUI() {
   }
 
   syncNext();
+
+  /* Telegram BackButton visibility */
+  const _tg = window.Telegram?.WebApp;
+  if (_tg?.initData) {
+    if (cur > 0 && cur < 8) _tg.BackButton.show(); else _tg.BackButton.hide();
+  }
 }
 
 function syncNext() {
@@ -912,7 +919,33 @@ async function submitForm(e) {
 
   await sendToTelegram(text);
   nav(8, 1);
+  if (window.Telegram?.WebApp?.initData) {
+    setTimeout(() => window.Telegram.WebApp.close(), 3000);
+  }
 }
+
+/* ═══════════════════════════════════════════════
+   TELEGRAM MINI-APP
+═══════════════════════════════════════════════ */
+function handleThanksBtn() {
+  const tg = window.Telegram?.WebApp;
+  if (tg?.initData) tg.close(); else location.href = 'index.html';
+}
+
+(function () {
+  const tg = window.Telegram?.WebApp;
+  if (!tg?.initData) return;
+  tg.ready();
+  tg.expand();
+  tg.BackButton.onClick(goBack);
+
+  /* pre-fill name from Telegram profile */
+  const first = tg.initDataUnsafe?.user?.first_name;
+  if (first) {
+    const el = document.querySelector('[name="name"]');
+    if (el && !el.value) el.value = first;
+  }
+})();
 
 /* ═══════════════════════════════════════════════
    INIT
